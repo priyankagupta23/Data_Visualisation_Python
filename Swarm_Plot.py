@@ -34,3 +34,7 @@ sns.swarmplot(x = 'DEALSIZE', y = 'SALES', data = sales);
 fig = plt.figure(figsize = (12, 6))
 sns.swarmplot(x = 'PRODUCTLINE', y = 'SALES', data = sales)
 plt.show();
+
+fig = plt.figure(figsize = (12, 6))
+sns.swarmplot(x = 'PRODUCTLINE', y = 'SALES', hue = 'DEALSIZE', data = sales)
+plt.show();
