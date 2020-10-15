@@ -39,3 +39,6 @@ plt.tight_layout()
 
 g = sns.FacetGrid(df, row = 'Region');
 g.map(sns.boxplot, 'Happiness Score');
+
+g = sns.FacetGrid(df2, col = 'Region', row = 'Country');
+g.map(sns.boxplot, 'Happiness Score');
