@@ -29,7 +29,10 @@ sns.boxplot(df.Generosity)
 sns.boxplot(x = 'Economy (GDP per Capita)', data = df);
 
 fig, axs = plt.subplots(nrows=3);
-sns.boxplot(df[df.Region == 'Western Europe']['Happiness Score'], ax = axs[0]);
-sns.boxplot(df[df.Region == 'Sub-Saharan Africa']['Happiness Score'], ax = axs[1]);
-sns.boxplot(df[df.Region == 'North America']['Happiness Score'], ax = axs[2]);
+p1 = sns.boxplot(df[df.Region == 'Western Europe']['Happiness Score'], ax = axs[0]);
+p1.set_title('Western Europe');
+p2 = sns.boxplot(df[df.Region == 'Sub-Saharan Africa']['Happiness Score'], ax = axs[1]);
+p2.set_title('Sub-Saharan Africa');
+p3 = sns.boxplot(df[df.Region == 'North America']['Happiness Score'], ax = axs[2]);
+p3.set_title('North America');
 plt.tight_layout()
