@@ -36,3 +36,6 @@ p2.set_title('Sub-Saharan Africa');
 p3 = sns.boxplot(df[df.Region == 'North America']['Happiness Score'], ax = axs[2]);
 p3.set_title('North America');
 plt.tight_layout()
+
+g = sns.FacetGrid(df, row = 'Region');
+g.map(sns.boxplot, 'Happiness Score');
