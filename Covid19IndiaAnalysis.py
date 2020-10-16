@@ -202,22 +202,31 @@ covid.to_excel("covid.xlsx")
 
 with open('data.json') as f:
     data = json.load(f)
+    
 data = data['states_daily']
+
 df = pd.json_normalize(data)
 
 df_.drop('date', axis = 1, inplace = True)
+
 df_.set_index('status', inplace = True)
+
 df_ = df_.T
+
 df.head()
+
 df_ = df_.apply(pd.to_numeric)
+
 df_.drop('tt', inplace = True)
 
+"""##Bar Plot of States and number of Confirmed Covid cases"""
 fig = plt.figure(figsize=(12,6))
 plt.bar(df_.index, df_.Confirmed, color = 'orange');
 #plt.xticks(rotation = 90);
 plt.tight_layout()
 plt.show()
 
+"""##Stacked Bar Plot of States and number of Confirmed, Recovered and Deceased cases"""
 fig = plt.gcf();
 fig.set_size_inches(15, 6);
 plt.bar(df_.index, df_.Confirmed, color = 'orange');
