@@ -12,6 +12,7 @@ Original file is located at
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 """###URL for corona data state wise for India"""
 
@@ -198,3 +199,35 @@ sns.barplot(x = covid_state.index, y = covid_state['positive'])
 covid.info()
 
 covid.to_excel("covid.xlsx")
+
+with open('data.json') as f:
+    data = json.load(f)
+data = data['states_daily']
+df = pd.json_normalize(data)
+
+df_.drop('date', axis = 1, inplace = True)
+df_.set_index('status', inplace = True)
+df_ = df_.T
+df.head()
+df_ = df_.apply(pd.to_numeric)
+df_.drop('tt', inplace = True)
+
+fig = plt.figure(figsize=(12,6))
+plt.bar(df_.index, df_.Confirmed, color = 'orange');
+#plt.xticks(rotation = 90);
+plt.tight_layout()
+plt.show()
+
+fig = plt.gcf();
+fig.set_size_inches(15, 6);
+plt.bar(df_.index, df_.Confirmed, color = 'orange');
+plt.bar(df_.index, df_.Recovered, bottom = df_.Confirmed, color = 'green');
+plt.bar(df_.index, df_.Deceased, bottom = df_.Confirmed + df_.Recovered, color = 'red');
+#plt.xticks(rotation = 90);
+plt.tight_layout()
+for i, val in enumerate(df_.index):
+    y = df_.loc[val].sum()
+    if y > 1000:
+        x = i
+        plt.text(x, y, y, ha = 'center');
+plt.show()
