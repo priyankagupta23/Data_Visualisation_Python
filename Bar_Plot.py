@@ -51,3 +51,15 @@ type_suicide.droplevel(level=1).plot(kind = 'bar')
 
 fig = plt.figure(figsize=(12,6))
 type_suicide.droplevel(level=0).groupby('Type').sum().plot(kind = 'bar')
+
+df = suicide_data.groupby(['State','Gender'])['Total'].sum()
+df.head()
+
+df = pd.DataFrame(df)
+df.head()
+
+df.unstack().plot(kind = 'bar');
+plt.tight_layout();
+plt.show();
+
+df.unstack().plot(kind = 'bar', stacked = True);
