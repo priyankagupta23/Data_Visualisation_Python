@@ -52,6 +52,8 @@ type_suicide.droplevel(level=1).plot(kind = 'bar')
 fig = plt.figure(figsize=(12,6))
 type_suicide.droplevel(level=0).groupby('Type').sum().plot(kind = 'bar')
 
+"""Stacked Bar Plot"""
+
 df = suicide_data.groupby(['State','Gender'])['Total'].sum()
 df.head()
 
@@ -84,3 +86,24 @@ for i in df3.index :
     x = i
     plt.text(x, y, y, ha = 'center');
 plt.show();
+
+"""Relative Stacked Bar Plot"""
+
+df3['Total'] = df3.sum(axis = 1)
+df3.head()
+
+df3['Male_Fraction'] = df3['Male']/df3['Total']
+df3['Female_Fraction'] = df3['Female']/df3['Total']
+df3.head()
+
+fig = plt.gcf();
+fig.set_size_inches(15, 6);
+plt.bar(df3.index, df3.Female_Fraction, color = 'pink');
+plt.bar(df3.index, df3.Male_Fraction, bottom = df3.Female_Fraction, color = 'blue');
+plt.xticks(rotation = 90);
+plt.tight_layout();
+plt.show();
+
+"""Horizontal layout"""
+
+plt.barh(df3.index, df3.Female_Fraction, color = 'pink');
