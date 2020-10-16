@@ -63,3 +63,24 @@ plt.tight_layout();
 plt.show();
 
 df.unstack().plot(kind = 'bar', stacked = True);
+plt.tight_layout();
+
+df2 = df.unstack()
+df2.head()
+
+df2.columns
+
+df3 = df2.droplevel(0, axis = 1)
+df3.head()
+
+fig = plt.gcf();
+fig.set_size_inches(15, 6);
+plt.bar(df3.index, df3.Female, color = 'pink')
+plt.bar(df3.index, df3.Male, bottom = df3.Female, color = 'blue')
+plt.xticks(rotation = 90)
+plt.tight_layout()
+for i in df3.index :
+    y = df3.loc[i].sum()
+    x = i
+    plt.text(x, y, y, ha = 'center');
+plt.show();
