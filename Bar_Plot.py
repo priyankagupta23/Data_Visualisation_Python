@@ -18,6 +18,10 @@ suicide_data.info()
 
 suicide_data.head()
 
+sns.barplot(x = 'Gender', y = 'Total', data = suicide_data);
+
+sns.barplot(x = 'Age_group', y = 'Total', hue = 'Gender', data = suicide_data);
+
 type_sum = suicide_data.groupby('Type')['Total'].sum()
 a = type_sum.sort_values(ascending=False).head(10)
 a
