@@ -240,3 +240,55 @@ for i, val in enumerate(df_.index):
         x = i
         plt.text(x, y, y, ha = 'center');
 plt.show()
+
+"""Analysing the area plot of the state of Maharashtra individually"""
+
+df_M = df[['mh','date','status']]
+df_M.head()
+
+df_M['mh'].loc[0]
+df_M['mh'] = pd.to_numeric(df_M['mh'])
+df_M['date'] = pd.to_datetime(df_M['date'])
+
+df_pivot = df_M.pivot(values='mh', columns='status', index='date')
+df_pivot.head()
+
+df_pivot.plot.area();
+
+fig = plt.gcf();
+fig.set_size_inches(15,6);
+plt.stackplot(df_pivot.index, df_pivot.Confirmed, df_pivot.Recovered, df_pivot.Deceased);
+
+fig = plt.gcf();
+fig.set_size_inches(15,6);
+plt.stackplot(df_pivot.index, df_pivot.Confirmed, df_pivot.Recovered, df_pivot.Deceased,
+              labels = ['Confirmed', 'Recovered', 'Deceased'],
+              colors= ['orange', 'green', 'red']);
+plt.legend();
+
+fig = plt.gcf();
+fig.set_size_inches(15,6);
+plt.stackplot(df_pivot.index, df_pivot.Confirmed/df_pivot.sum(axis=1), df_pivot.Recovered/df_pivot.sum(axis=1), df_pivot.Deceased/df_pivot.sum(axis=1),
+              labels = ['Confirmed', 'Recovered', 'Deceased'],
+              colors= ['orange', 'green', 'red']);
+plt.legend();
+
+"""Defining a function to calculate stacked area by state"""
+
+def stacked_area_by_state(state):
+    df_state = df[[state, 'date', 'status']]
+    df_state[state] = pd.to_numeric(df_state[state])
+    df_state['date'] = pd.to_datetime(df_state['date'])
+    df_state = df_state.pivot_table(values=state, columns='status', index='date')
+    fig = plt.gcf();
+    fig.set_size_inches(15,6);
+    plt.stackplot(df_state.index, df_state.Confirmed/df_state.sum(axis=1),
+                  df_state.Recovered/df_state.sum(axis=1),
+                  df_state.Deceased/df_state.sum(axis=1),
+                  labels = ['Confirmed','Recovered','Deceased'],
+                  colors = ['orange','green','red']);
+    plt.legend();
+    
+"""Calculating area for the state of Tamil Nadu"""
+
+stacked_area_by_state('tn')
