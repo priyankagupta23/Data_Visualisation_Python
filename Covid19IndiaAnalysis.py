@@ -207,21 +207,21 @@ data = data['states_daily']
 
 df = pd.json_normalize(data)
 
-df_.drop('date', axis = 1, inplace = True)
+df.drop('date', axis = 1, inplace = True)
 
-df_.set_index('status', inplace = True)
+df.set_index('status', inplace = True)
 
-df_ = df_.T
+df = df.T
 
 df.head()
 
-df_ = df_.apply(pd.to_numeric)
+df = df.apply(pd.to_numeric)
 
-df_.drop('tt', inplace = True)
+df.drop('tt', inplace = True)
 
 """##Bar Plot of States and number of Confirmed Covid cases"""
 fig = plt.figure(figsize=(12,6))
-plt.bar(df_.index, df_.Confirmed, color = 'orange');
+plt.bar(df.index, df.Confirmed, color = 'orange');
 #plt.xticks(rotation = 90);
 plt.tight_layout()
 plt.show()
@@ -229,13 +229,13 @@ plt.show()
 """##Stacked Bar Plot of States and number of Confirmed, Recovered and Deceased cases"""
 fig = plt.gcf();
 fig.set_size_inches(15, 6);
-plt.bar(df_.index, df_.Confirmed, color = 'orange');
-plt.bar(df_.index, df_.Recovered, bottom = df_.Confirmed, color = 'green');
-plt.bar(df_.index, df_.Deceased, bottom = df_.Confirmed + df_.Recovered, color = 'red');
+plt.bar(df.index, df.Confirmed, color = 'orange');
+plt.bar(df.index, df.Recovered, bottom = df.Confirmed, color = 'green');
+plt.bar(df.index, df.Deceased, bottom = df.Confirmed + df.Recovered, color = 'red');
 #plt.xticks(rotation = 90);
 plt.tight_layout()
-for i, val in enumerate(df_.index):
-    y = df_.loc[val].sum()
+for i, val in enumerate(df.index):
+    y = df.loc[val].sum()
     if y > 1000:
         x = i
         plt.text(x, y, y, ha = 'center');
@@ -292,3 +292,25 @@ def stacked_area_by_state(state):
 """Calculating area for the state of Tamil Nadu"""
 
 stacked_area_by_state('tn')
+
+"""## Line Plot"""
+
+df_ = pd.melt(df, id_vars = 'date',
+              value_vars = list(df.columns).remove('date'),
+              var_name='state', value_name='confirmed')
+
+df_.head()
+
+sns.lineplot(x='date', y='confirmed', data=df_);
+
+states = ['mh','dl','wb','tn','ka','gj']
+
+df_ = df_[df_.state.isin(states)]
+
+df_.head()
+
+sns.lineplot(x = 'date', y = 'confirmed', hue = 'state', data = df_, palette = 'Reds');
+
+fig = plt.gcf();
+fig.set_size_inches(15,6);
+sns.lineplot(x = 'date', y = 'confirmed', hue = 'state', data = df_, palette = 'Reds', hue_order = ['mh','dl','tn','gi','ka','wb']);
